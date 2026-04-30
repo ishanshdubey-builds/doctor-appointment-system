@@ -13,7 +13,7 @@ import "./signup.css";
 import { useNavigate } from "react-router-dom";
 
 // Import axios configuration
-import api from "../../api/axiosConfig";
+import api from "api/axiosConfig";
 
 // Export the main functional component for Signup
 export default function Signup() {

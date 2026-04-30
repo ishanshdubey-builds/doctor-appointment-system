@@ -14,7 +14,7 @@ import { useAuth } from "./Securirty/AuthContext";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 // Import axios configuration for API calls
-import api from "../../../api/axiosConfig";
+import api from "api/axiosConfig";
 
 // Import specific FontAwesome icons for the user interface
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

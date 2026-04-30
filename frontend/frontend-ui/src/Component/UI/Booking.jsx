@@ -16,7 +16,7 @@ import "./Booking.css";
 import { useAuth } from "./Securirty/AuthContext";
 
 // Import API configuration
-import api from "../../api/axiosConfig";
+import api from "api/axiosConfig";
 
 // Component accepts an optional onBookingMade prop (though primarily uses routing)
 export default function BookingComponent({ onBookingMade }) {
