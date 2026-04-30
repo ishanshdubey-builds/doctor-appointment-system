@@ -21,7 +21,7 @@ export default function WelcomeComponent() {
       try {
         const response = await api.get("/booking");
         const bookingsData = response.data;
-        
+
         const liveBookings = bookingsData.sort((a, b) => {
           const timeA = new Date(`${a.booking_date}T${a.booking_time}`);
           const timeB = new Date(`${b.booking_date}T${b.booking_time}`);
@@ -31,7 +31,7 @@ export default function WelcomeComponent() {
         const patientBooking = liveBookings.filter(
           (booking) => booking.patient_id === authContext.userId
         );
-        
+
         setBookings(patientBooking);
       } catch (error) {
         console.error("Error fetching bookings:", error);
@@ -47,15 +47,15 @@ export default function WelcomeComponent() {
   const handleDownloadPDF = async (report_id) => {
     try {
       const response = await api.get(`/downloadReport/booking`, {
-          params: { report_id },
-          responseType: "blob",
+        params: { report_id },
+        responseType: "blob",
       });
 
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `Report_${report_id}.pdf`; 
+      link.download = `Report_${report_id}.pdf`;
       document.body.appendChild(link);
       link.click();
 
@@ -68,7 +68,7 @@ export default function WelcomeComponent() {
   };
 
   if (!authContext.userId) {
-    return <div className="dashboard-wrapper" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh'}}><h2 style={{color: 'white'}}>Loading profile...</h2></div>;
+    return <div className="dashboard-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}><h2 style={{ color: 'white' }}>Loading profile...</h2></div>;
   }
 
   return (
@@ -77,7 +77,7 @@ export default function WelcomeComponent() {
         <BookingComponent />
       ) : (
         <div className="dashboard-grid">
-          
+
           <div className="dashboard-header glass-panel">
             <h1 className="welcome-text">Welcome back, User {authContext.userId}</h1>
           </div>
@@ -100,7 +100,7 @@ export default function WelcomeComponent() {
                 </button>
               </div>
             </div>
-            
+
             {error && <div className="error-alert">{error}</div>}
           </div>
 
@@ -108,7 +108,7 @@ export default function WelcomeComponent() {
             <div className="table-header">
               <h2>My Appointments</h2>
             </div>
-            
+
             <div className="table-responsive">
               <table className="modern-table">
                 <thead>
@@ -149,7 +149,7 @@ export default function WelcomeComponent() {
               </table>
             </div>
           </div>
-          
+
         </div>
       )}
     </div>

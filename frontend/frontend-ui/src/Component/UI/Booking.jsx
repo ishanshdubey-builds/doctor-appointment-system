@@ -16,7 +16,7 @@ import "./Booking.css";
 import { useAuth } from "./Securirty/AuthContext";
 
 // Import API configuration
-import api from "../../../api/axiosConfig";
+import api from "../../api/axiosConfig";
 
 // Component accepts an optional onBookingMade prop (though primarily uses routing)
 export default function BookingComponent({ onBookingMade }) {
@@ -35,19 +35,19 @@ export default function BookingComponent({ onBookingMade }) {
 
   // State variable holding the final confirmation string returned by API
   const [responseMessage, setResponseMessage] = useState("");
-  
+
   // State variable storing mapped validation errors for form feedback
   const [errors, setErrors] = useState({});
-  
+
   // State variable tracking available doctors fetched from backend
   const [doctorList, setDoctorList] = useState([]);
 
   // Initialize generic react-router programmatic navigator
   const navigate = useNavigate();
-  
+
   // Destructure contextual user data from singleton Auth state
   const { user, doctor, isAuthenticated } = useAuth();
-  
+
   // Safety check yielding active user ID if defined
   const userId = user ? user.user_id : "";
 
@@ -62,10 +62,10 @@ export default function BookingComponent({ onBookingMade }) {
     try {
       // Basic GET request hitting open endpoint via Axios
       const response = await api.get("/doctorlist");
-      
+
       // Axios directly parses JSON into the data object
       const data = response.data;
-      
+
       // Log array locally to ensure successful backend wiring
       console.log("Doctors Fetched:", data);
 
@@ -81,7 +81,7 @@ export default function BookingComponent({ onBookingMade }) {
   const getCurrentTime = () => {
     // Instantialize standard js Date object for "now"
     const now = new Date();
-    
+
     // Convert string-held form state date into a real date object
     const selectedDate = new Date(formData.booking_date);
 
@@ -89,7 +89,7 @@ export default function BookingComponent({ onBookingMade }) {
     if (selectedDate.toDateString() === now.toDateString()) {
       // Calculate scalar minute value relative to start of day
       const totalMinutes = now.getHours() * 60 + now.getMinutes();
-      
+
       // Format hour bounds back down to modular arrays
       const minutes = (totalMinutes % (24 * 60)) % 60;
       const hours = Math.floor(totalMinutes / 60) % 24;
@@ -106,7 +106,7 @@ export default function BookingComponent({ onBookingMade }) {
   const validateForm = () => {
     // Assume validity unless explicitly marked false
     let valid = true;
-    
+
     // Temporary dictionary collating string messages
     const newErrors = {};
 
@@ -163,7 +163,7 @@ export default function BookingComponent({ onBookingMade }) {
 
     // Write transient object over state tracker
     setErrors(newErrors);
-    
+
     // Return explicit boolean marker
     return valid;
   };
@@ -211,7 +211,7 @@ export default function BookingComponent({ onBookingMade }) {
   return (
     // Outer responsive framework mapping standard dashboard context
     <div className="booking-card glass-panel" style={{ margin: '1rem auto' }}>
-      
+
       {/* Visual top indicator defining form context bounds */}
       <h2 style={{ color: 'var(--color-primary)', borderBottom: '2px solid rgba(0,0,0,0.05)', paddingBottom: '1rem', marginBottom: '1.5rem', marginTop: 0 }}>
         Schedule New Consultation
@@ -219,7 +219,7 @@ export default function BookingComponent({ onBookingMade }) {
 
       {/* Main submission interceptor wiring form layout */}
       <form onSubmit={handleSubmit} className="form-grid">
-        
+
         {/* Full-width block declaring primary patient record */}
         <div className="form-group full-width">
           <label className="form-label">Patient Full Name*</label>
@@ -244,8 +244,8 @@ export default function BookingComponent({ onBookingMade }) {
             <option value="">Select current age</option>
             {/* Creates an inline dynamic array sizing exactly 120 elements mapping to raw indexes */}
             {[...Array(120)].map((_, index) => (
-              <option key={index+1} value={index+1}>
-                {index+1} Years Old
+              <option key={index + 1} value={index + 1}>
+                {index + 1} Years Old
               </option>
             ))}
           </select>
@@ -273,7 +273,7 @@ export default function BookingComponent({ onBookingMade }) {
             type="date"
             value={formData.booking_date}
             // ISO Split ensuring min validation locks client browser past today literally
-            min={new Date().toISOString().split("T")[0]} 
+            min={new Date().toISOString().split("T")[0]}
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -292,7 +292,7 @@ export default function BookingComponent({ onBookingMade }) {
             type="time"
             value={formData.booking_time}
             // Bind manual temporal check matching today threshold 
-            min={getCurrentTime()} 
+            min={getCurrentTime()}
             onChange={(e) => setFormData({ ...formData, booking_time: e.target.value })}
           />
           {errors.booking_time && <div className="error-message">{errors.booking_time}</div>}
@@ -333,9 +333,9 @@ export default function BookingComponent({ onBookingMade }) {
         </div>
 
         {/* Explicit explicit form input toggling cash tracking mechanics */}
-        <div className="form-group" style={{ 
-            display: 'flex', flexDirection: 'column', padding: '0.8rem', 
-            background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius)', border: '1px solid rgba(0,0,0,0.05)'
+        <div className="form-group" style={{
+          display: 'flex', flexDirection: 'column', padding: '0.8rem',
+          background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius)', border: '1px solid rgba(0,0,0,0.05)'
         }}>
           <label className="form-label" style={{ marginBottom: '0.5rem' }}>Payment Method*</label>
           <label className="radio-item" style={{ color: 'var(--text-dark)' }}>
@@ -354,7 +354,7 @@ export default function BookingComponent({ onBookingMade }) {
         {/* Submit activation boundary binding logic directly to overarching handler map */}
         <div className="form-group full-width" style={{ marginTop: '1rem' }}>
           <button className="btn primary-btn auth-btn" type="submit">
-             Secure Appointment
+            Secure Appointment
           </button>
         </div>
       </form>

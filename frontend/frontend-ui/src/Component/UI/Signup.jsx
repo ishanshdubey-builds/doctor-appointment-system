@@ -13,7 +13,7 @@ import "./signup.css";
 import { useNavigate } from "react-router-dom";
 
 // Import axios configuration
-import api from "../../../api/axiosConfig";
+import api from "../../api/axiosConfig";
 
 // Export the main functional component for Signup
 export default function Signup() {
@@ -38,10 +38,10 @@ export default function Signup() {
 
   // State object to hold validation error messages for specific fields
   const [errors, setErrors] = useState({});
-  
+
   // State to hold any server response messages upon successful registration
   const [responseMessage, setResponseMessage] = useState("");
-  
+
   // Instantiate the navigation hook
   const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ export default function Signup() {
   const validateForm = () => {
     // Flag to track overall validity
     let valid = true;
-    
+
     // Temporary object to collect specific error messages
     const newErrors = {};
 
@@ -145,7 +145,7 @@ export default function Signup() {
 
     // Write temporary object back to component state
     setErrors(newErrors);
-    
+
     // Return boolean indicating form status
     return valid;
   };
@@ -162,7 +162,7 @@ export default function Signup() {
         const userIdAvailabilityResponse = await api.get(
           `/checkuserId?user_id=${formData.user_id}`
         );
-        
+
         // If not available, notify the user and halt submission
         if (!userIdAvailabilityResponse.data.available) {
           setErrors({ ...errors, user_id: "This username is already taken" });
@@ -171,14 +171,14 @@ export default function Signup() {
 
         // Second Network Request: Post the signup data to the backend
         const response = await api.post("/auth/signup", formData);
-        
+
         // Handle successful response
         if (response.status === 200) {
           setResponseMessage(response.data.message);
           // Route user to success screen and pass response data
           navigate("/signupsuccess", { state: { responseMessage: response.data } });
         }
-        
+
         // Reset local state if signup is flawless (though navigate usually unmounts)
         setFormData({
           user_id: "", name: "", date_of_birth: "", address: "",
@@ -200,13 +200,13 @@ export default function Signup() {
     <div className="auth-wrapper">
       {/* Reused auth-card but with extended signup-card width */}
       <div className="auth-card signup-card glass-panel">
-        
+
         <h2 className="auth-title">Create an Account</h2>
         <p className="auth-subtitle">Join DAS and manage your healthcare seamlessly.</p>
-        
+
         {/* Registration form calling handleSubmit */}
         <form onSubmit={handleSubmit} className="form-grid">
-          
+
           {/* Name Input */}
           <div className="form-group">
             <label className="form-label">Full Name*</label>
@@ -330,7 +330,7 @@ export default function Signup() {
                 />
                 Patient
               </label>
-              
+
               <label className="radio-item text-dark">
                 <input
                   type="radio"
@@ -346,11 +346,11 @@ export default function Signup() {
 
           {/* Dynamic Section: Rendered ONLY if the Doctor role is selected */}
           {formData.role === "Doctor" && (
-             <div className="form-grid full-width" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
+            <div className="form-grid full-width" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
               <div className="form-group full-width">
-                 <h4 style={{ margin: 0, color: 'var(--color-primary)' }}>Doctor Professional Details</h4>
+                <h4 style={{ margin: 0, color: 'var(--color-primary)' }}>Doctor Professional Details</h4>
               </div>
-              
+
               <div className="form-group">
                 <label className="form-label">Medical Specification*</label>
                 <input
@@ -420,7 +420,7 @@ export default function Signup() {
             </button>
           </div>
         </form>
-        
+
         {/* Output server response messages */}
         {responseMessage && <p className="response-msg">{responseMessage}</p>}
       </div>

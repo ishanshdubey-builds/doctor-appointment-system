@@ -33,22 +33,22 @@ export default function DoctorComponent() {
 
   // State to hold upcoming/current appointments
   const [bookings, setBookings] = useState([]);
-  
+
   // State to hold past appointments
   const [pastBookings, setPastBookings] = useState([]);
-  
+
   // State map tracking whether an upload succeeded/failed by booking ID
   const [uploadStatus, setUploadStatus] = useState({});
-  
+
   // State holding metadata parameters before a file is chosen
   const [uploadParams, setUploadParams] = useState({});
-  
+
   // State map linking booking ID to a backend-generated report ID
   const [uploadStatusMap, setUploadStatusMap] = useState({});
-  
+
   // State for rendering download/upload errors natively
   const [error, setError] = useState(null);
-  
+
   // State map for tracking doctor-selected status (right/wrong checkmarks) per booking
   const [selectedOption, setSelectedOption] = useState({});
 
@@ -135,7 +135,7 @@ export default function DoctorComponent() {
         // GET array of ALL bookings across the system via Axios
         const response = await api.get("/booking");
         const pastBookingsData = response.data;
-        
+
         // Get midnight of current day for comparison
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -193,10 +193,10 @@ export default function DoctorComponent() {
     try {
       // Temporarily store meta-data about the upload target
       setUploadParams({ booking_id, patient_name, booking_date, patient_id });
-      
+
       // Clear any prior status message for this specific submission
       setUploadStatus((prevStatus) => ({ ...prevStatus, [booking_id]: null }));
-      
+
       // Trigger the browser's native file explorer dialog via the hidden ref
       fileInputRef.current.click();
     } catch (error) {
@@ -208,7 +208,7 @@ export default function DoctorComponent() {
   async function handleFileUpload(e) {
     // Destructure target parameters defined immediately prior in handleReportSubmission
     const { booking_id, patient_name, booking_date, patient_id } = uploadParams;
-    
+
     // Basic verification of metadata
     if (!booking_id || !patient_name || !booking_date || !patient_id) {
       console.error("Booking details not available for file upload");
@@ -236,7 +236,7 @@ export default function DoctorComponent() {
 
       // Decode whatever the server responded
       const responseData = response.data;
-      
+
       if (response.status === 200) {
         // Tag upload success via status block maps
         setUploadStatus((prevStatus) => ({
@@ -249,9 +249,9 @@ export default function DoctorComponent() {
           ...prevMap,
           [booking_id]: responseData.report_id,
         }));
-        
+
         // Solidify the upload locally across browser sessions
-        saveReportIdToLocalStorage(booking_id, responseData.report_id); 
+        saveReportIdToLocalStorage(booking_id, responseData.report_id);
       } else {
         // Tag upload failure map
         setUploadStatus((prevStatus) => ({
@@ -275,8 +275,8 @@ export default function DoctorComponent() {
     try {
       // Configure AXIOS to receive Blob binary format
       const response = await api.get(`/downloadReport`, {
-        params: { report_id }, 
-        responseType: "blob", 
+        params: { report_id },
+        responseType: "blob",
       });
 
       // Synthesize Blob with proper mime type matching PDF specification
@@ -312,7 +312,7 @@ export default function DoctorComponent() {
   }
 
   if (!authContext.userId) {
-    return <div className="dashboard-wrapper" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh'}}><h2 style={{color: 'white'}}>Loading profile...</h2></div>;
+    return <div className="dashboard-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}><h2 style={{ color: 'white' }}>Loading profile...</h2></div>;
   }
 
   // Visual layout for Doctor Dashboard
@@ -325,10 +325,10 @@ export default function DoctorComponent() {
         style={{ display: "none" }}
         onChange={handleFileUpload}
       />
-      
+
       {/* Root responsive grid mapping */}
       <div className="dashboard-grid">
-        
+
         {/* Banner Section */}
         <div className="dashboard-header glass-panel">
           <h1 className="welcome-text">Dr. {authContext.userId}'s Dashboard</h1>
@@ -344,14 +344,14 @@ export default function DoctorComponent() {
               <p><em>Sensitive details removed from local storage for security</em></p>
             </div>
           </div>
-          
+
           {/* Persistent general error viewer mapping output text */}
           {error && <div className="error-alert">{error}</div>}
         </div>
 
         {/* Center Main Dashboard Column */}
         <div className="dashboard-main doctor-main">
-          
+
           {/* Container wrapper for Live / Future Appointments */}
           <div className="table-block glass-panel" style={{ marginBottom: "2rem" }}>
             <div className="table-header">
@@ -380,7 +380,7 @@ export default function DoctorComponent() {
                       <td>{booking.patient_name}</td>
                       {/* Read mapped localized ID logic onto view */}
                       <td>{getReportIdFromLocalStorage(booking.booking_id) || "-"}</td>
-                      
+
                       {/* Actions Cell binding localized buttons */}
                       <td className="action-cell">
                         <button
@@ -419,10 +419,10 @@ export default function DoctorComponent() {
                         ) : (
                           <div className="toggle-actions">
                             <button className="btn-icon success" onClick={() => markOption(booking.booking_id, "right")}>
-                              &#10004; 
+                              &#10004;
                             </button>
                             <button className="btn-icon danger" onClick={() => markOption(booking.booking_id, "wrong")}>
-                              &#10006; 
+                              &#10006;
                             </button>
                           </div>
                         )}
@@ -510,10 +510,10 @@ export default function DoctorComponent() {
                         ) : (
                           <div className="toggle-actions">
                             <button className="btn-icon success" onClick={() => markOption(booking.booking_id, "right")}>
-                              &#10004; 
+                              &#10004;
                             </button>
                             <button className="btn-icon danger" onClick={() => markOption(booking.booking_id, "wrong")}>
-                              &#10006; 
+                              &#10006;
                             </button>
                           </div>
                         )}
