@@ -3,7 +3,7 @@ import "./WelcomeComponent.css";
 import { useNavigate, useParams } from "react-router-dom";
 import BookingComponent from "./Booking";
 import { useAuth } from "./Securirty/AuthContext";
-import api from "api/axiosConfig";
+import api from "../../api/axiosConfig";
 
 export default function WelcomeComponent() {
   const { user_id } = useParams();
