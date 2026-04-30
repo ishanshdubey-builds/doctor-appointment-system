@@ -1,0 +1,231 @@
+/* ==========================================================================
+   Home Page Styles
+   Focuses on modern grid layouts, responsive cards, and premium typography.
+   Inherits colors and glassmorphism variables from index.css.
+   ========================================================================== */
+
+/* Main wrapper with safe padding and max width */
+.home-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Hero / Banner Area styling */
+.banner {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: none; /* override glassmorphism border if necessary */
+}
+
+.banner-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.banner-subtitle {
+  font-size: 1.25rem;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+/* General Content Card styling */
+.content-card {
+  padding: 2rem;
+  transition: transform var(--transition-normal);
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+}
+
+.content-card h2 {
+  color: var(--color-primary);
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+/* Subtle underline accent for headers */
+.content-card h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-full);
+}
+
+.content-card p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* Grid layout for splitting content on desktop */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Switch to two columns on larger screens */
+@media (min-width: 900px) {
+  .home-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Flex columns for nesting */
+.grid-col-left, .grid-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Styled Lists for modern checklist looks */
+.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.styled-list li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+/* Custom checkmark list item */
+.styled-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-success);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.compact-list li {
+  margin-bottom: 0.75rem;
+}
+
+/* Styled ordered list for steps */
+.styled-ordered-list {
+  padding-left: 1.5rem;
+  color: var(--text-dark);
+}
+
+.styled-ordered-list li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Doctor / Innovation section specific styling */
+.doctor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.image-wrapper {
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.modern-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.modern-img:hover {
+  transform: scale(1.05);
+}
+
+.learn-more-container {
+  margin-top: 1.5rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-align: center;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+
+/* Process Guides styling */
+.process-guides {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.step-item {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  text-align: center;
+  transition: background var(--transition-fast);
+}
+
+.step-item:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.step-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-secondary-dark);
+  color: white;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-weight: bold;
+  box-shadow: var(--shadow-sm);
+}
+
+.step-item h4 {
+  margin: 1.5rem 0 0.5rem;
+  color: var(--color-primary);
+}
+
+.step-item p {
+  font-size: 0.9rem;
+  margin: 0;
+}

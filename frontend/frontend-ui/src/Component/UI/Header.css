@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Header Styles
+   Implements a sticky, transparent, glassmorphism navigation bar.
+   ========================================================================== */
+
+/* Main Header Container */
+.app-header {
+  /* Flexbox for horizontal layout */
+  display: flex;
+  
+  /* Space out logo and navigation items */
+  justify-content: space-between;
+  
+  /* Vertically center all items */
+  align-items: center;
+  
+  /* Add padding for spacing */
+  padding: 1rem 5%;
+  
+  /* Ensure header sticks to the top of the page */
+  position: sticky;
+  top: 0;
+  
+  /* High z-index to stay above other content */
+  z-index: 1000;
+  
+  /* Subtle bottom border to separate from content */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Brand Link Logo Styles */
+.brand-link {
+  text-decoration: none;
+}
+
+.brand-logo {
+  /* Inherit text styling but emphasize it */
+  color: var(--color-primary);
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  
+  /* Add a gradient effect to the logo text */
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary-dark));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Disable margin to align properly */
+  margin: 0;
+}
+
+/* Navigation Menu Container */
+.main-nav {
+  /* Make sure it scales nicely */
+  display: flex;
+  align-items: center;
+}
+
+/* Base List styling */
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  gap: 1.5rem; /* Automatically space items */
+}
+
+/* Individual list item */
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Standard navigation link */
+.nav-link {
+  color: var(--text-dark);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  transition: all var(--transition-normal);
+}
+
+/* Link hover state */
+.nav-link:hover {
+  color: var(--color-secondary-dark);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Button variants for navigation */
+.nav-btn {
+  /* Add button-like paddings and shadows */
+  padding: 0.5rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.primary-btn {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.primary-btn:hover {
+  background-color: var(--color-primary-light);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.danger-btn {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.danger-btn:hover {
+  background-color: #dc2626; /* Darker red */
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}

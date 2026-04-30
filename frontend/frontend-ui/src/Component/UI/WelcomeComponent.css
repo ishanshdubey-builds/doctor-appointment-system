@@ -1,0 +1,175 @@
+/* ==========================================================================
+   Patient Dashboard Styles (WelcomeComponent)
+   Uses a clean CSS grid layout, responsive tables, and glassmorphism.
+   Inherits colors from index.css.
+   ========================================================================== */
+
+/* Main wrapper with safe padding and responsive maximum width */
+.dashboard-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Base grid layout dividing sidebar and main content */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 2rem;
+  /* Top banner spans the whole row */
+  grid-template-areas: 
+    "header"
+    "sidebar"
+    "main";
+}
+
+/* Two-column layout on desktops */
+@media (min-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: 
+      "header header"
+      "sidebar main";
+  }
+}
+
+/* Banner sizing */
+.dashboard-header {
+  grid-area: header;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.welcome-text {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* Sidebar for profile and actions */
+.dashboard-sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Reusable card structure */
+.profile-card, .booking-widget {
+  padding: 1.5rem;
+}
+
+.profile-card h3, .booking-widget h3 {
+  color: var(--color-primary);
+  border-bottom: 2px solid rgba(0,0,0,0.05);
+  padding-bottom: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.profile-details p {
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-details p strong {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Widget specifically for calling the user to book an appointment */
+.widget-content {
+  text-align: center;
+}
+
+.widget-content p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+/* Main Dashboard section containing the table */
+.dashboard-main {
+  grid-area: main;
+  padding: 2rem;
+  overflow: hidden; /* prevents stretching */
+}
+
+.table-header h2 {
+  color: var(--color-primary);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Table container to handle overflows */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+/* Table header styling */
+.modern-table th {
+  background-color: rgba(0, 0, 0, 0.03);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+/* Table body rows */
+.modern-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  color: var(--text-dark);
+  vertical-align: middle;
+}
+
+.modern-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.015);
+}
+
+/* Specifically styled action button within table */
+.action-btn {
+  background-color: transparent;
+  color: var(--color-secondary-dark);
+  border: 1px solid var(--color-secondary-dark);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.action-btn:hover {
+  background-color: var(--color-secondary-dark);
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem !important;
+  color: var(--text-muted) !important;
+  font-style: italic;
+}
+
+.error-alert {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  text-align: center;
+}
