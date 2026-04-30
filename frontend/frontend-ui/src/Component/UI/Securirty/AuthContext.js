@@ -26,22 +26,22 @@ export default function AuthProvider({ children }) {
     try {
       // Uses Axios, so base URL is automatically appended
       const response = await api.post("/auth/login", { user_id, password });
-      
+
       const { token, role, user_id: loggedInId } = response.data;
-      
+
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("user_id", loggedInId);
-      
+
       setAuthenticated(true);
       setUserRole(role);
       setUserId(loggedInId);
-      
+
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.error || "Login failed" 
+      return {
+        success: false,
+        message: error.response?.data?.error || "Login failed"
       };
     }
   }
