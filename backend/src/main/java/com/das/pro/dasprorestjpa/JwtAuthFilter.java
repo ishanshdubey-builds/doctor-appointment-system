@@ -25,8 +25,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private LoginRepo loginRepo;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
+
+        // 🔥 CRITICAL FIX — ALLOW PREFLIGHT (CORS)
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -55,8 +65,49 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
         filterChain.doFilter(request, response);
     }
+
+    // @Override
+    // protected void doFilterInternal(HttpServletRequest request,
+    // HttpServletResponse response, FilterChain filterChain)
+    // throws ServletException, IOException {
+    // String authHeader = request.getHeader("Authorization");
+    // String token = null;
+    // String username = null;
+    // String role = null;
+
+    // if (authHeader != null && authHeader.startsWith("Bearer ")) {
+    // token = authHeader.substring(7);
+    // try {
+    // username = jwtUtil.extractUsername(token);
+    // role = jwtUtil.extractRole(token);
+    // } catch (Exception e) {
+    // logger.error("JWT Validation failed: " + e.getMessage());
+    // }
+    // }
+
+    // if (username != null && role != null &&
+    // SecurityContextHolder.getContext().getAuthentication() == null) {
+    // UserInfoEntity userDetails = loginRepo.findById(username).orElse(null);
+
+    // if (userDetails != null && jwtUtil.validateToken(token,
+    // userDetails.getUser_id())) {
+    // SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" +
+    // role.toUpperCase());
+
+    // UsernamePasswordAuthenticationToken authToken = new
+    // UsernamePasswordAuthenticationToken(
+    // userDetails, null, Collections.singletonList(authority));
+
+    // authToken.setDetails(new
+    // WebAuthenticationDetailsSource().buildDetails(request));
+    // SecurityContextHolder.getContext().setAuthentication(authToken);
+    // }
+    // }
+    // filterChain.doFilter(request, response);
+    // }
 }
 
 // package com.das.pro.dasprorestjpa;
