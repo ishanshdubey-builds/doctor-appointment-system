@@ -9,4 +9,4 @@ WORKDIR /app
 
 RUN mvn clean package -DskipTests
 
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/das-pro-rest-jpa-0.0.1-SNAPSHOT.jar"] 
