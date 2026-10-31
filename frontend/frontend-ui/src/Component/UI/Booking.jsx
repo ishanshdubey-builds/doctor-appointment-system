@@ -46,7 +46,7 @@ export default function BookingComponent({ onBookingMade }) {
   const navigate = useNavigate();
 
   // Destructure contextual user data from singleton Auth state
-  const { user, doctor, isAuthenticated } = useAuth();
+  const { user, doctor, isAuthenticated, isLoading } = useAuth();
 
   // Safety check yielding active user ID if defined
   const userId = user ? user.user_id : "";
@@ -202,7 +202,7 @@ export default function BookingComponent({ onBookingMade }) {
   };
 
   // Wait until saved credentials have been restored before checking access.
-  if (authContext.isLoading) {
+  if (isLoading) {
     return <div className="route-loading" role="status">Restoring your secure session…</div>;
   }
 
