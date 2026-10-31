@@ -33,6 +33,11 @@ function AuthenticatedRoute({ children }) {
   // Log the authentication context for debugging purposes
   console.log("AuthContext in Guard:", authContext);
 
+  // Wait until saved credentials have been restored before applying the route guard.
+  if (authContext.isLoading) {
+    return <div className="route-loading" role="status">Restoring your secure session…</div>;
+  }
+
   // If the user is NOT authenticated, redirect them to the home/login page
   if (!authContext.isAuthenticated) {
     return <Navigate to="/Signin" />;
@@ -125,6 +130,7 @@ export default function AppRouter() {
             path="/DoctorComponent/:user_id" 
             element={<DoctorComponent />} 
           />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </AuthProvider>

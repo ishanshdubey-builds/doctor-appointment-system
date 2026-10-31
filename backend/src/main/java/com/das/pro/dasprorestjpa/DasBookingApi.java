@@ -1,84 +1,102 @@
 package com.das.pro.dasprorestjpa;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Core Spring and Network definitions
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-// Label controller allowing Spring component scanning to detect mapped routing ends
 @RestController
 public class DasBookingApi {
+    private final BookingRepo bookingRepo;
+    private final DoctorRepo doctorRepo;
 
-	// Automatically inject data access properties to manage Bookings directly via JVM
-	@Autowired
-	private BookingRepo bookRepo;
+    public DasBookingApi(BookingRepo bookingRepo, DoctorRepo doctorRepo) {
+        this.bookingRepo = bookingRepo;
+        this.doctorRepo = doctorRepo;
+    }
 
-	// Establish POST mapping routing new booking payload requests to this specific function block
-	@PostMapping("/Patientbooking")
-	public ResponseEntity<Map<String, Object>> signup(@RequestBody BookingInfoEntity patient) {
-		// Instantiate generic mapped return array supporting polymorphic data structures
-		Map<String, Object> response = new HashMap<>();
-		try {
-			// Extremely verbose field checking making sure malformed or incomplete objects are intercepted early
-			if (
-					patient.getPatient_name() == null || patient.getPatient_name().trim().isEmpty() ||
-					patient.getAge() == null || patient.getAge() == 0L || 
-					patient.getContact() == null || patient.getContact() == 0L ||
-					patient.getBooking_date() == null || 
-					patient.getBooking_time() == null || 
-					patient.getBooking_type() == null || 
-					patient.getPayment_mode() == null 
-					) {
-				// Inject direct human error text
-				response.put("error", "All fields are required");
-				
-				// Immediately deny routing returning HTTP 400 Bad Request
-				return ResponseEntity.badRequest().body(response);
-			}
+    @PostMapping("/Patientbooking")
+    public ResponseEntity<Map<String, Object>> createBooking(
+            @RequestBody BookingInfoEntity booking,
+            Authentication authentication) {
+        Map<String, Object> response = new HashMap<>();
+        UserInfoEntity currentUser = currentUser(authentication);
+        if (currentUser == null || !"patient".equalsIgnoreCase(currentUser.getRole())) {
+            response.put("error", "Only authenticated patient accounts can create appointments.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
 
-			// Localized server console trace identifying passed payload gate 
-			System.out.println("Booking success");
-			
-			// Commit the entire payload entity explicitly to the bounded database
-			bookRepo.save(patient);
-			
-			// Reflect the precise created identifiers dynamically back downward toward the requesting client
-			response.put("booking_id", patient.getBooking_id());
-			response.put("booking_name", patient.getPatient_name()); 
-			response.put("booking_date", patient.getBooking_date());
-			response.put("booking_time", patient.getBooking_time());
-			response.put("booking_type", patient.getBooking_type());
+        if (booking == null
+                || isBlank(booking.getPatient_name())
+                || booking.getAge() == null || booking.getAge() < 1 || booking.getAge() > 120
+                || booking.getContact() == null || booking.getContact() < 1
+                || booking.getBooking_date() == null
+                || booking.getBooking_time() == null
+                || isBlank(booking.getBooking_type())
+                || isBlank(booking.getPayment_mode())
+                || isBlank(booking.getDoctor_id())) {
+            response.put("error", "Please complete all appointment details with valid values.");
+            return ResponseEntity.badRequest().body(response);
+        }
 
-			// Complete cycle returning HTTP 200 code
-			return ResponseEntity.ok(response);
-		} catch (Exception e) {
-			// Log general failure traces visually
-			System.out.println("failed");
-			
-			// Set explicit server-sided return error message array
-			response.put("error", "Booking Failed");
-			
-			// Expose explicit Server failures instead of client-side failures
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
-	}
-	
-	// Create GET mapping fetching the complete stored list of current global Database Bookings
-	@GetMapping("/booking")
-	public ResponseEntity<List<BookingInfoEntity>> getDoctorBookings() {
-		// Native iteration pushing bounded iterables into standardized generic Lists 
-		List<BookingInfoEntity> doctorBookings = (List<BookingInfoEntity>) bookRepo.findAll();
-		
-		// Map generic array mapping directly out as an HTTP 200 return containing literal arrays 
-		return ResponseEntity.ok(doctorBookings);
-	}
+        if (!doctorRepo.existsById(booking.getDoctor_id())) {
+            response.put("error", "The selected doctor is no longer available.");
+            return ResponseEntity.badRequest().body(response);
+        }
 
+        // Never trust a patient ID supplied by the browser; derive ownership from the JWT.
+        booking.setPatient_id(currentUser.getUser_id());
+        try {
+            BookingInfoEntity saved = bookingRepo.save(booking);
+            response.put("response", "Your appointment request has been submitted successfully.");
+            response.put("booking_id", saved.getBooking_id());
+            response.put("booking_name", saved.getPatient_name());
+            response.put("booking_date", saved.getBooking_date());
+            response.put("booking_time", saved.getBooking_time());
+            response.put("booking_type", saved.getBooking_type());
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException exception) {
+            response.put("error", "The appointment could not be saved. Please try again.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/booking")
+    public ResponseEntity<List<BookingInfoEntity>> getMyBookings(Authentication authentication) {
+        UserInfoEntity currentUser = currentUser(authentication);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<BookingInfoEntity> visibleBookings = new ArrayList<>();
+        for (BookingInfoEntity booking : bookingRepo.findAll()) {
+            if ("doctor".equalsIgnoreCase(currentUser.getRole())
+                    && currentUser.getUser_id().equals(booking.getDoctor_id())) {
+                visibleBookings.add(booking);
+            } else if ("patient".equalsIgnoreCase(currentUser.getRole())
+                    && currentUser.getUser_id().equals(booking.getPatient_id())) {
+                visibleBookings.add(booking);
+            }
+        }
+        return ResponseEntity.ok(visibleBookings);
+    }
+
+    private UserInfoEntity currentUser(Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserInfoEntity)) {
+            return null;
+        }
+        return (UserInfoEntity) authentication.getPrincipal();
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.isBlank();
+    }
 }

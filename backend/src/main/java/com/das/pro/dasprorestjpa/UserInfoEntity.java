@@ -2,6 +2,8 @@ package com.das.pro.dasprorestjpa;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // JPA mapping directives converting nested objects into relational schemas internally natively
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -49,10 +51,12 @@ public class UserInfoEntity {
 	 
 	// Provide inverse relationship pointing the Doctor Profile back towards base user records
 	@OneToOne(mappedBy = "userInfoEntity" , cascade = CascadeType.ALL)
+	@JsonIgnore
 	DoctorInfoEntity doctorInfoEntity;
 	 
 	// Provide identical inverse relationship pointing standard profiles pointing backward to base records
 	@OneToOne(mappedBy = "userInfoEntity" , cascade = CascadeType.ALL)
+	@JsonIgnore
 	PatientInfoEntity patientInfoEntity;
 	
 	// Built-in getters mapped cleanly isolating field definitions safely locally

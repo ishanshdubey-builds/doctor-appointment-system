@@ -1,37 +1,30 @@
-# Doctor Appointment System - Backend
+# Doctor Appointment System — Backend
 
-## Project Description
-The backend for the Doctor Appointment System (DAS) providing REST APIs for user authentication, appointment booking, patient records management, and doctor schedules.
+Spring Boot 3.2 / Java 17 / Spring Security / JWT / Spring Data JPA / MySQL.
 
-## Tech Stack
-- **Java 17**
-- **Spring Boot 3.2.2**
-- **Spring Security & JWT**
-- **Spring Data JPA**
-- **MySQL**
+## Required environment variables
 
-## How to Run Locally
+Configure these in Render (or your hosting provider):
 
-1. Clone the repository and navigate to the `backend` directory.
-2. Ensure you have Java 17+ installed.
-3. Update `src/main/resources/application.properties` or set environment variables for your local MySQL instance.
-4. Run the application using Maven:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-5. The API will be available at `http://localhost:8080`.
+| Variable | Purpose |
+| --- | --- |
+| `PORT` | Supplied automatically by Render |
+| `DB_URL` | Full JDBC URL, such as `jdbc:mysql://HOST:3306/DATABASE?sslMode=REQUIRED&serverTimezone=UTC` |
+| `DB_USERNAME` | Database username |
+| `DB_PASSWORD` | Database password |
+| `JWT_SECRET` | Random signing secret of at least 32 bytes |
+| `CORS_ALLOWED_ORIGINS` | Comma-separated allowed frontend origins; include your exact Vercel URL |
 
-## Environment Variables Needed
+The Filess.io hostname shown in the recorded Render failure no longer resolves. Create or choose a reachable MySQL database and copy its current JDBC connection details into Render. The application source intentionally contains no database credentials.
 
-Create an environment or update the configuration with the following keys:
-- `PORT` (Default: 8080)
-- `DB_URL` (JDBC connection string)
-- `DB_USERNAME`
-- `DB_PASSWORD`
-- `JWT_SECRET` (For signing JWT tokens, ensure it is randomly generated and secure)
+## Render configuration
 
-## Live URL
-*(Add production URL here after deployment via Railway: e.g., https://das-backend.railway.app)*
+- Root directory / Docker build context: repository root
+- Runtime: Docker
+- Dockerfile path: `backend/Dockerfile`
+- Health check path: `/health`
+- Set all variables listed above in the service environment.
 
-## Screenshots
-*(Provide relevant API structure or Swagger screenshots here)*
+## Local run
+
+From `backend/`, run `./mvnw spring-boot:run` (Windows: `mvnw.cmd spring-boot:run`) after defining the environment variables. The API listens on port 8080 by default.

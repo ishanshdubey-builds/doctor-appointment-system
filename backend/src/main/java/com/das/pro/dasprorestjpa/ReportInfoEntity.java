@@ -1,5 +1,7 @@
 package com.das.pro.dasprorestjpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class ReportInfoEntity {
 	// Map Java Byte arrays securely up isolating PDF buffer constructs dynamically mapping natively to LONGBLOB types
 	@Lob
 	@Column(name = "pdf_content", columnDefinition = "LONGBLOB")
+	@JsonIgnore
 	byte[] pdfContent;
 	
 	// Default constructor needed for JPA proxying
@@ -49,17 +52,18 @@ public class ReportInfoEntity {
 	// Isolate generic mapping associating generic identifiers back natively to independent Booking mappings 
 	@OneToOne
 	@JoinColumn(name = "booking_id")
+	@JsonIgnore
 	BookingInfoEntity bookingInfoEntity; 
 	
 	// Relate nested lists resolving mapped independent schemas dynamically 
 	@ManyToOne(targetEntity = PatientInfoEntity.class)
 	@JoinColumn(name="patient_id")
-	List<PatientInfoEntity> patientInfoEntity;
+	PatientInfoEntity patientInfoEntity;
 	
 	// Connect reporting payloads back securely utilizing internal Java mapped lists to Doctors actively mapped natively
-	@ManyToOne(cascade = CascadeType.ALL, targetEntity = DoctorInfoEntity.class)
+	@ManyToOne(targetEntity = DoctorInfoEntity.class)
 	@JoinColumn(name="doctor_id")
-	List<DoctorInfoEntity> doctorInfoEntity;
+	DoctorInfoEntity doctorInfoEntity;
 
 	// Generated properties mapping explicitly to JVM Heap fields explicitly validating property calls safely
 	
@@ -127,19 +131,19 @@ public class ReportInfoEntity {
 		this.pdfContent = pdfContent;
 	}
 
-	public List<PatientInfoEntity> getPatientInfoEntity() {
+	public PatientInfoEntity getPatientInfoEntity() {
 		return patientInfoEntity;
 	}
 
-	public void setPatientInfoEntity(List<PatientInfoEntity> patientInfoEntity) {
+	public void setPatientInfoEntity(PatientInfoEntity patientInfoEntity) {
 		this.patientInfoEntity = patientInfoEntity;
 	}
 
-	public List<DoctorInfoEntity> getDoctorInfoEntity() {
+	public DoctorInfoEntity getDoctorInfoEntity() {
 		return doctorInfoEntity;
 	}
 
-	public void setDoctorInfoEntity(List<DoctorInfoEntity> doctorInfoEntity) {
+	public void setDoctorInfoEntity(DoctorInfoEntity doctorInfoEntity) {
 		this.doctorInfoEntity = doctorInfoEntity;
 	}
 

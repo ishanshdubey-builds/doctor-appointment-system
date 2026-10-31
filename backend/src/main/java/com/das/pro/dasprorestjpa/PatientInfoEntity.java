@@ -3,6 +3,8 @@ package com.das.pro.dasprorestjpa;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // JPA Database Abstractions mapping pure Java classes directly to remote SQL tables
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -37,10 +39,12 @@ public class PatientInfoEntity {
 	// Link Patient back to universal User payload using a foreign key boundary named "user_id"
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	UserInfoEntity userInfoEntity;
 	
 	// Connect Patient to array of Reports utilizing a mapped variable "patientInfoEntity" found inside the Report table
 	@OneToMany(mappedBy = "patientInfoEntity")
+	@JsonIgnore
 	List<ReportInfoEntity> reportInfoEntity;
 
 	// Generated properties mapping explicitly to JVM Heap fields natively

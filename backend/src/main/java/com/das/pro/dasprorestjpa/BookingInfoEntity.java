@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 // JPA annotations importing native table bounds tracking properties dynamically against hibernate schema natively 
 import jakarta.persistence.CascadeType;
@@ -40,6 +42,7 @@ public class BookingInfoEntity {
 	String booking_type;
 	String payment_mode;
 	String doctor_id;
+	String patient_id;
 	String response;
 	
 	// Default constructor needed for JPA proxying
@@ -51,6 +54,7 @@ public class BookingInfoEntity {
 	@JoinTable(name = "Booking_Doctor_Table",
 			joinColumns= {@JoinColumn(name = "booking_id", referencedColumnName="booking_id")},
 			inverseJoinColumns = {@JoinColumn(name = "doctor_id", referencedColumnName="doctor_id")})
+	@JsonIgnore
 	List<DoctorInfoEntity> doctorInfoEntity;
 	
 	// Tie direct one-to-one record explicitly bound representing biological report uploads attached securely natively
@@ -64,6 +68,12 @@ public class BookingInfoEntity {
 	}
 	public void setReportInfoEntity(ReportInfoEntity reportInfoEntity) {
 		this.reportInfoEntity = reportInfoEntity;
+	}
+	public String getPatient_id() {
+		return patient_id;
+	}
+	public void setPatient_id(String patient_id) {
+		this.patient_id = patient_id;
 	}
 	public String getResponse() {
 		return response;

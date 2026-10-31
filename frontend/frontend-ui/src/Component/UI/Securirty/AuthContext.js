@@ -1,61 +1,82 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import api from "../../../api/axiosConfig";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }) {
-  const [isAuthenticated, setAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Only fetch non-sensitive data
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     const id = localStorage.getItem("user_id");
 
-    if (token) {
-      setAuthenticated(true);
+    if (token && role && id) {
       setUserRole(role);
       setUserId(id);
+      setAuthenticated(true);
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user_id");
     }
+    setIsLoading(false);
   }, []);
 
-  async function login(user_id, password) {
+  const login = useCallback(async (user_id, password) => {
     try {
-      // Uses Axios, so base URL is automatically appended
       const response = await api.post("/auth/login", { user_id, password });
-
       const { token, role, user_id: loggedInId } = response.data;
+
+      if (!token || !role || !loggedInId) {
+        return { success: false, message: "The server returned an incomplete login response." };
+      }
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("user_id", loggedInId);
-
-      setAuthenticated(true);
       setUserRole(role);
       setUserId(loggedInId);
-
-      return { success: true };
+      setAuthenticated(true);
+      return { success: true, role, user_id: loggedInId };
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.error || "Login failed"
+        message: error.response?.data?.error || "Unable to sign in. Please try again."
       };
     }
-  }
+  }, []);
 
-  function signOut() {
-    localStorage.clear();
+  const signOut = useCallback(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user_id");
     setAuthenticated(false);
     setUserRole(null);
     setUserId(null);
-  }
+  }, []);
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, signOut, userRole, userId, isDoctor: userRole === 'Doctor' }}>
-      {children}
-    </AuthContext.Provider>
+  const isDoctor = userRole?.toLowerCase() === "doctor";
+  const user = useMemo(
+    () => (userId ? { user_id: userId, role: userRole } : null),
+    [userId, userRole]
   );
+
+  const value = useMemo(() => ({
+    isAuthenticated,
+    isLoading,
+    login,
+    signOut,
+    userRole,
+    userId,
+    user,
+    doctor: isDoctor,
+    isDoctor
+  }), [isAuthenticated, isLoading, login, signOut, userRole, userId, user, isDoctor]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
