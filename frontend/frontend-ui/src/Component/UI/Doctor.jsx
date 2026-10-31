@@ -305,6 +305,11 @@ export default function DoctorComponent() {
     }
   };
 
+  // Wait until saved credentials have been restored before checking access.
+  if (authContext.isLoading) {
+    return <div className="route-loading" role="status">Restoring your secure session…</div>;
+  }
+
   // Pre-render hook avoiding unauthorized data viewing
   if (!authContext.isAuthenticated || !authContext.doctor) {
     // Navigate home natively if guard checks fail
