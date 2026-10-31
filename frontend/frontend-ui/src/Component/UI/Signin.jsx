@@ -18,7 +18,7 @@ export default function Signin() {
     const result = await authContext.login(user_id, password);
     
     if (result.success) {
-      if (authContext.isDoctor) {
+      if (result.role?.toLowerCase() === "doctor") {
         navigate(`/DoctorComponent/${user_id}`);
       } else {
         navigate(`/welcome/${user_id}`);
