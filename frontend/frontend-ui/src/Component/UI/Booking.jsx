@@ -117,7 +117,7 @@ export default function BookingComponent({ onBookingMade }) {
     }
 
     // Validate numeric physiological requirement
-    if (!formData.age || formData.age.toString().trim() === "" || formData.age == 0) {
+    if (!formData.age || formData.age.toString().trim() === "" || Number(formData.age) === 0) {
       newErrors.age = "Valid Patient Age is required";
       valid = false;
     }
