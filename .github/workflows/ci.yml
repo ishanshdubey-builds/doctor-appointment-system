@@ -27,7 +27,7 @@ jobs:
           cache-dependency-path: backend/pom.xml
       - name: Run Maven tests
         working-directory: backend
-        run: ./mvnw --batch-mode --no-transfer-progress clean test
+        run: bash mvnw --batch-mode --no-transfer-progress clean test
 
   frontend:
     name: React production build
