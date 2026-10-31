@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "./Securirty/AuthContext";
 
 // Import routing components for navigation and parameter extraction
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 // Import axios configuration for API calls
 import api from "../../api/axiosConfig";
@@ -42,9 +42,6 @@ export default function DoctorComponent() {
 
   // State holding metadata parameters before a file is chosen
   const [uploadParams, setUploadParams] = useState({});
-
-  // State map linking booking ID to a backend-generated report ID
-  const [uploadStatusMap, setUploadStatusMap] = useState({});
 
   // State for rendering download/upload errors natively
   const [error, setError] = useState(null);
@@ -242,12 +239,6 @@ export default function DoctorComponent() {
         setUploadStatus((prevStatus) => ({
           ...prevStatus,
           [booking_id]: "success",
-        }));
-
-        // Link response mapping backend ID locally
-        setUploadStatusMap((prevMap) => ({
-          ...prevMap,
-          [booking_id]: responseData.report_id,
         }));
 
         // Solidify the upload locally across browser sessions
