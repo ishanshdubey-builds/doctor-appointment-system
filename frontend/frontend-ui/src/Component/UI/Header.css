@@ -1,121 +1,74 @@
-/* ==========================================================================
-   Header Styles
-   Implements a sticky, transparent, glassmorphism navigation bar.
-   ========================================================================== */
-
-/* Main Header Container */
 .app-header {
-  /* Flexbox for horizontal layout */
-  display: flex;
-  
-  /* Space out logo and navigation items */
-  justify-content: space-between;
-  
-  /* Vertically center all items */
-  align-items: center;
-  
-  /* Add padding for spacing */
-  padding: 1rem 5%;
-  
-  /* Ensure header sticks to the top of the page */
   position: sticky;
   top: 0;
-  
-  /* High z-index to stay above other content */
   z-index: 1000;
-  
-  /* Subtle bottom border to separate from content */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 76px;
+  padding: .8rem max(5vw, calc((100vw - 1240px) / 2));
+  background: rgba(255, 255, 255, .96);
+  border: 0;
+  border-bottom: 1px solid #e5eeee;
+  border-radius: 0;
+  box-shadow: 0 4px 18px rgba(18, 63, 80, .045);
+  backdrop-filter: blur(12px);
 }
-
-/* Brand Link Logo Styles */
-.brand-link {
-  text-decoration: none;
-}
-
+.brand-link { display: inline-flex; align-items: center; gap: .75rem; }
 .brand-logo {
-  /* Inherit text styling but emphasize it */
-  color: var(--color-primary);
-  font-size: 1.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border-radius: 14px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 1.15rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
-  
-  /* Add a gradient effect to the logo text */
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary-dark));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  
-  /* Disable margin to align properly */
-  margin: 0;
+  letter-spacing: -.05em;
+  -webkit-text-fill-color: #fff;
 }
-
-/* Navigation Menu Container */
-.main-nav {
-  /* Make sure it scales nicely */
-  display: flex;
-  align-items: center;
+.logo-container::after {
+  content: "CARE, CONNECTED";
+  display: block;
+  margin: -1px 0 0 54px;
+  color: #82979b;
+  font-size: .59rem;
+  font-weight: 700;
+  letter-spacing: .16em;
 }
-
-/* Base List styling */
-.nav-list {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  align-items: center;
-  gap: 1.5rem; /* Automatically space items */
-}
-
-/* Individual list item */
-.nav-item {
-  display: flex;
-  align-items: center;
-}
-
-/* Standard navigation link */
+.main-nav { display: flex; align-items: center; }
+.nav-list { display: flex; align-items: center; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.nav-item { display: flex; align-items: center; }
 .nav-link {
-  color: var(--text-dark);
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  padding: .68rem .95rem;
+  border-radius: 10px;
+  color: #476168;
+  font-size: .92rem;
+  font-weight: 600;
 }
-
-/* Link hover state */
-.nav-link:hover {
-  color: var(--color-secondary-dark);
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Button variants for navigation */
-.nav-btn {
-  /* Add button-like paddings and shadows */
-  padding: 0.5rem 1.25rem;
-  box-shadow: var(--shadow-sm);
-}
-
+.nav-link:hover { background: #eff7f5; color: var(--color-primary); }
+.nav-btn { padding: .72rem 1.15rem; box-shadow: none; }
 .primary-btn {
-  background-color: var(--color-primary);
-  color: white;
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
 }
-
-.primary-btn:hover {
-  background-color: var(--color-primary-light);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.danger-btn {
-  background-color: var(--color-danger);
-  color: white;
-}
-
-.danger-btn:hover {
-  background-color: #dc2626; /* Darker red */
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+.primary-btn:hover { transform: translateY(-1px); background: #1a5665; color: #fff; box-shadow: 0 8px 18px rgba(18, 63, 80, .16); }
+.danger-btn { border: 1px solid #f1d8dc; border-radius: 10px; background: #fff7f7; color: #b74250; }
+.danger-btn:hover { background: #ffeded; color: #9d3543; }
+@media (max-width: 560px) {
+  .app-header { min-height: 68px; padding: .7rem 1rem; }
+  .brand-logo { width: 40px; height: 40px; }
+  .logo-container::after { margin-left: 48px; font-size: .5rem; }
+  .nav-list { gap: .15rem; }
+  .nav-link { padding: .58rem .65rem; font-size: .82rem; }
+  .nav-btn { padding: .58rem .7rem; }
 }
