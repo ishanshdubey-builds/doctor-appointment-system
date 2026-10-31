@@ -56,6 +56,7 @@ public class DasBookingApi {
         booking.setPatient_id(currentUser.getUser_id());
         try {
             BookingInfoEntity saved = bookingRepo.save(booking);
+            response.put("response", "Your appointment request has been submitted successfully.");
             response.put("booking_id", saved.getBooking_id());
             response.put("booking_name", saved.getPatient_name());
             response.put("booking_date", saved.getBooking_date());
