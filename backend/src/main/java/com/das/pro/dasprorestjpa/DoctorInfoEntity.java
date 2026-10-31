@@ -43,6 +43,7 @@ public class DoctorInfoEntity {
 	// Connect to shared user identity safely mapping properties up
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	UserInfoEntity userInfoEntity;
 	 
 	// Provide inverse relationship bridging appointments mapped internally utilizing Jackson flag ignoring nested recursion
@@ -52,6 +53,7 @@ public class DoctorInfoEntity {
 	
 	// Forward relation linking medical attachments dynamically natively tracking multiple rows cleanly
 	@OneToMany(mappedBy = "doctorInfoEntity")
+	@JsonIgnore
 	List<ReportInfoEntity> reportInfoEntity;
 	
 	// JVM standard setter boundaries explicitly handling raw properties natively dynamically
