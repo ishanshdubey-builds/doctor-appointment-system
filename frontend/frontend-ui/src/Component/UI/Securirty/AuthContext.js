@@ -40,7 +40,7 @@ export default function AuthProvider({ children }) {
       setUserRole(role);
       setUserId(loggedInId);
       setAuthenticated(true);
-      return { success: true };
+      return { success: true, role, user_id: loggedInId };
     } catch (error) {
       return {
         success: false,
