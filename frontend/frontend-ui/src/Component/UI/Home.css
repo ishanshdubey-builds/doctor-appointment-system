@@ -26,7 +26,7 @@
 .hero-note small { margin-top: .2rem; color: #819397; font-size: .68rem; }
 .hero-side-label { position: absolute; right: -.35rem; top: 1.5rem; writing-mode: vertical-rl; color: #74908e; font-size: .58rem; font-weight: 800; letter-spacing: .16em; }
 .home-section { display: flex; flex-direction: column; gap: 1.5rem; }
-.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; }
+.section-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
 .section-heading h2, .process-intro h2 { margin: 0; color: #1a414c; font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -.045em; }
 .section-heading > p { max-width: 360px; margin: 0 0 .2rem; color: #74888d; font-size: .9rem; line-height: 1.7; }
 .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
