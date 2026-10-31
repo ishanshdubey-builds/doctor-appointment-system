@@ -59,7 +59,7 @@ public class DasReportApi {
 
         if (file == null || file.isEmpty() || file.getSize() > MAX_PDF_SIZE
                 || (file.getContentType() != null && !"application/pdf".equalsIgnoreCase(file.getContentType()))
-                || !file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
+                || file.getOriginalFilename() == null || !file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
             response.put("error", "Please upload a valid PDF file up to 20 MB.");
             return ResponseEntity.badRequest().body(response);
         }
