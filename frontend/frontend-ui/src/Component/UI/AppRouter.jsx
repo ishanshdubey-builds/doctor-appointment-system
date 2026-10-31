@@ -125,6 +125,7 @@ export default function AppRouter() {
             path="/DoctorComponent/:user_id" 
             element={<DoctorComponent />} 
           />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </AuthProvider>
