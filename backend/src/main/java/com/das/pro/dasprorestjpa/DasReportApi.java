@@ -52,7 +52,7 @@ public class DasReportApi {
 
         BookingInfoEntity booking = bookingOptional.get();
         if (!currentUser.getUser_id().equals(booking.getDoctor_id())
-                || !booking.getBooking_date().equals(bookingDate)) {
+                || !bookingDate.equals(booking.getBooking_date())) {
             response.put("error", "You are not authorised to update this appointment.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
