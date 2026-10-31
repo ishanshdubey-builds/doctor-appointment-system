@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 // JPA annotations importing native table bounds tracking properties dynamically against hibernate schema natively 
 import jakarta.persistence.CascadeType;
@@ -52,6 +54,7 @@ public class BookingInfoEntity {
 	@JoinTable(name = "Booking_Doctor_Table",
 			joinColumns= {@JoinColumn(name = "booking_id", referencedColumnName="booking_id")},
 			inverseJoinColumns = {@JoinColumn(name = "doctor_id", referencedColumnName="doctor_id")})
+	@JsonIgnore
 	List<DoctorInfoEntity> doctorInfoEntity;
 	
 	// Tie direct one-to-one record explicitly bound representing biological report uploads attached securely natively
