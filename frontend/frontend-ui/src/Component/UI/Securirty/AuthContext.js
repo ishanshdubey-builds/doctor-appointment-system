@@ -8,6 +8,7 @@ export default function AuthProvider({ children }) {
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -23,6 +24,7 @@ export default function AuthProvider({ children }) {
       localStorage.removeItem("role");
       localStorage.removeItem("user_id");
     }
+    setIsLoading(false);
   }, []);
 
   const login = useCallback(async (user_id, password) => {
@@ -66,6 +68,7 @@ export default function AuthProvider({ children }) {
 
   const value = useMemo(() => ({
     isAuthenticated,
+    isLoading,
     login,
     signOut,
     userRole,
@@ -73,7 +76,7 @@ export default function AuthProvider({ children }) {
     user,
     doctor: isDoctor,
     isDoctor
-  }), [isAuthenticated, login, signOut, userRole, userId, user, isDoctor]);
+  }), [isAuthenticated, isLoading, login, signOut, userRole, userId, user, isDoctor]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
