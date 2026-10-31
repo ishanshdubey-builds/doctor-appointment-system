@@ -42,9 +42,14 @@ jobs:
       - name: Install dependencies
         working-directory: frontend/frontend-ui
         run: npm install --no-audit --no-fund
+      - name: Run frontend tests
+        working-directory: frontend/frontend-ui
+        env:
+          CI: "true"
+        run: npm test -- --watchAll=false --passWithNoTests
       - name: Build frontend
         working-directory: frontend/frontend-ui
         env:
-          CI: "false"
+          CI: ""
           REACT_APP_API_URL: https://api.example.invalid
         run: npm run build
