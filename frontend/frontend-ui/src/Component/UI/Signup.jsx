@@ -141,6 +141,9 @@ export default function Signup() {
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
       valid = false;
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+      valid = false;
     }
 
     // Write temporary object back to component state
