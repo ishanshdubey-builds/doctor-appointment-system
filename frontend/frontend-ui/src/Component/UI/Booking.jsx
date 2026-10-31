@@ -201,6 +201,11 @@ export default function BookingComponent({ onBookingMade }) {
     }
   };
 
+  // Wait until saved credentials have been restored before checking access.
+  if (authContext.isLoading) {
+    return <div className="route-loading" role="status">Restoring your secure session…</div>;
+  }
+
   // Pre-render hook avoiding unauthorized data viewing (blocks doctors and logged-out users)
   if (!isAuthenticated || doctor) {
     // Navigate home natively if guard checks fail
