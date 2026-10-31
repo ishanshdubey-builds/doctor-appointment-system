@@ -40,6 +40,7 @@ public class BookingInfoEntity {
 	String booking_type;
 	String payment_mode;
 	String doctor_id;
+	String patient_id;
 	String response;
 	
 	// Default constructor needed for JPA proxying
@@ -64,6 +65,12 @@ public class BookingInfoEntity {
 	}
 	public void setReportInfoEntity(ReportInfoEntity reportInfoEntity) {
 		this.reportInfoEntity = reportInfoEntity;
+	}
+	public String getPatient_id() {
+		return patient_id;
+	}
+	public void setPatient_id(String patient_id) {
+		this.patient_id = patient_id;
 	}
 	public String getResponse() {
 		return response;
