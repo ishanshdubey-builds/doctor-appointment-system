@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import api from "../../../api/axiosConfig";
 
 export const AuthContext = createContext(null);
@@ -25,7 +25,7 @@ export default function AuthProvider({ children }) {
     }
   }, []);
 
-  async function login(user_id, password) {
+  const login = useCallback(async (user_id, password) => {
     try {
       const response = await api.post("/auth/login", { user_id, password });
       const { token, role, user_id: loggedInId } = response.data;
@@ -47,16 +47,16 @@ export default function AuthProvider({ children }) {
         message: error.response?.data?.error || "Unable to sign in. Please try again."
       };
     }
-  }
+  }, []);
 
-  function signOut() {
+  const signOut = useCallback(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("user_id");
     setAuthenticated(false);
     setUserRole(null);
     setUserId(null);
-  }
+  }, []);
 
   const isDoctor = userRole?.toLowerCase() === "doctor";
   const user = useMemo(
@@ -73,7 +73,7 @@ export default function AuthProvider({ children }) {
     user,
     doctor: isDoctor,
     isDoctor
-  }), [isAuthenticated, userRole, userId, user, isDoctor]);
+  }), [isAuthenticated, login, signOut, userRole, userId, user, isDoctor]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
