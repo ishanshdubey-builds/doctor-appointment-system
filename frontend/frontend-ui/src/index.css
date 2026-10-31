@@ -45,6 +45,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   outline-offset: 2px;
 }
 #root, .app-container { min-height: 100vh; }
+.route-loading { display: grid; min-height: 50vh; place-items: center; padding: 2rem; color: #587279; font-size: .92rem; font-weight: 600; }
 .glass-panel {
   background: var(--bg-card);
   border: 1px solid #e4eeee;
